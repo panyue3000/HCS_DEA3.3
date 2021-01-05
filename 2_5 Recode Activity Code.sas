@@ -43,3 +43,7 @@ ELSE IF MONTH_RECORD_VIN IN (10,11,12) THEN QUARTER_RECORD_VIN='Q4';
 QUARTER_RECORD_VIN1=catx('-', YEAR_RECORD_VIN, QUARTER_RECORD_VIN);
 
 RUN;
+
+proc freq data=dea_4_0;
+tables record_vintage;
+run;
