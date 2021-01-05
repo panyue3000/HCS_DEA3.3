@@ -29,7 +29,7 @@ SET CAL_QTR_0;
 BY YEAR QUARTER;
 
 /*********************************REMEMBER TO CHANGE THE YEAR HERE************************************************************************************/
-IF YEAR=2020 THEN DO;
+IF YEAR=2021 THEN DO;
 	IF LAST.MONTH/3<last.quarter then delete;
 END;
 run;
@@ -77,7 +77,7 @@ BY YEAR MONTH;
 RUN;
 
 
-/*TEMPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP  append empty 2020 10 to data*/
+/*TEMPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPappend empty 2020 10 to data*/
 DATA TEMP;
 YEAR=2020;
 MONTH=10;
