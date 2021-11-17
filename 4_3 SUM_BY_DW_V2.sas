@@ -243,6 +243,29 @@ QUIT;
 
 /*SOURCE FILE FOR HCS*/
 
+/*PROC SQL;*/
+/*   CREATE TABLE DEA33_FORHCS_&DATE. AS */
+/*   SELECT DISTINCT */
+/*			T1.STATE,*/
+/*	        T2.COMMUNITY AS COUNTY,*/
+/* 			t1.reporterid,*/
+/*            t1.YEAR_RECORD_VIN AS YEAR,*/
+/*            INPUT(substr(CAT(T1.QUARTER_RECORD_VIN),2,1),1.) AS QUARTER,*/
+/*			T1.MONTH_RECORD_VIN AS MONTH,*/
+/*			T1.NAME,*/
+/*			t1.dea_reg_num,*/
+/*			T1.DW*/
+/*			FROM DEA_4_1 t1 LEFT JOIN MAP.REPORTER_LIST T2 ON t1.REPORTERID=T2.REPORTERID*/
+/*      ORDER BY T1.STATE,*/
+/*			   t1.reporterid,*/
+/*               t1.YEAR_RECORD_VIN,*/
+/*			   T1.MONTH_RECORD_VIN,*/
+/*			   T1.DW*/
+/*;*/
+/*QUIT;*/
+
+/*SOURCE FILE FOR HCS with DW30SW specification */
+
 PROC SQL;
    CREATE TABLE DEA33_FORHCS_&DATE. AS 
    SELECT DISTINCT 
@@ -254,7 +277,8 @@ PROC SQL;
 			T1.MONTH_RECORD_VIN AS MONTH,
 			T1.NAME,
 			t1.dea_reg_num,
-			T1.DW
+			T1.DW,
+			t1.dw30_sw
 			FROM DEA_4_1 t1 LEFT JOIN MAP.REPORTER_LIST T2 ON t1.REPORTERID=T2.REPORTERID
       ORDER BY T1.STATE,
 			   t1.reporterid,
