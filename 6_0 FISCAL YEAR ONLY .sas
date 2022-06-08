@@ -62,7 +62,7 @@ QUIT;
 PROC SQL;
    CREATE TABLE DEA_ALL_2_fiscal AS 
    SELECT DISTINCT 
-   	      STATE,
+/*   	      STATE,*/
 		  ReporterId,
 		  '3.3' AS MEASUREID,
 		  SUM_CT AS NUMERATOR,
