@@ -137,6 +137,7 @@ PROC FORMAT;
 		"cs_active_20220401" = '2022-03'
 		"cs_active_20220501" = '2022-04'
 		"cs_active_20220601" = '2022-05'
+		"cs_active_20220701" = '2022-06'
 
 ;
 	VALUE $dea_reg_numl
@@ -148,6 +149,7 @@ PROC FORMAT;
 		"M" = 'Mid-Level Practitioner (the different approved subcategories of MLPs listed in Business Activity Sub Code)'
 		"P" = 'Manufacturer / Distributor / Researcher / Analytical Lab / Importer / Exporter / Reverse Distributor / Narcotic Treatment Program'
 		"R" = 'Manufacturer / Distributor / Researcher / Analytical Lab / Importer / Exporter / Reverse Distributor / Narcotic Treatment Program'
+		"S" = 'S'
 	;
 	VALUE $business_activity_codel
 		"0" = 'Chemical Handlers of List 1 (Manufacturer / Distributor / Importer / Exporter)'
@@ -155,16 +157,17 @@ PROC FORMAT;
 		"B" = 'Hospital/Clinic'
 		"F" = 'Practiotioner'
 		"G" = 'Teaching institution'
-		"M" = ' Mid-Level Practitioner (the different approved subcategories of MLPs listed under business activity subcodes)'
+		"M" = 'Mid-Level Practitioner (the different approved subcategories of MLPs listed under business activity subcodes)'
 		"P" = 'Manufacturer / Distributor / Researcher / Analytical Lab / Importer / Exporter / Reverse Distributor / Narcotic Treatment Program'
 		"R" = 'Manufacturer / Distributor / Researcher / Analytical Lab / Importer / Exporter / Reverse Distributor / Narcotic Treatment Program'
+		"S" = 'S'
 	;
 	VALUE $drug_schedulesl
 		"1" = 'Schedule 1 Controlled Substances'
 		"2" = 'Schedule 2 Narcotic Controlled Substances'
 		"3" = 'Schedule 3 Narcotic Controlled Substances'
 		"4" = 'Schedule 4 Controlled Substances'
-		"5" = ' Schedule 5 Controlled Substances'
+		"5" = 'Schedule 5 Controlled Substances'
 		"2N" = 'Schedule 2N Non-Narcotic Controlled Substances'
 		"3N" = 'Schedule 3N Non-Narcotic Controlled Substances'
 		"L1" = 'List 1 Chemicals'
