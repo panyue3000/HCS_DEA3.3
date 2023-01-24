@@ -4,7 +4,8 @@
 data dea_5_fiscal;
 set dea_5;
 
-fiscal_date=mdy(month_record_vin,1,year_record_vin)+210;
+fiscal_date=intnx('month', mdy(month_record_vin,01,year_record_vin), 6);
+
 format fiscal_date yymms7.;
 
 
@@ -39,11 +40,38 @@ QUIT;
 
 /**************************************fiscal YEAR by dw**********************************/
 PROC SQL;
+   CREATE TABLE DEA_FY_0 AS 
+   SELECT DISTINCT 
+   		  T1.STATE,
+		  t1.reporterid,
+		  year(t1.fiscal_date) AS YEAR,
+  		    t1.dw,
+		    t1.dw_num,
+			t1.dea_reg_num
+/*			count (distinct address_1) as count_address_1,*/
+/*			count (distinct dea_reg_num) as count_dea_reg_num*/
+      FROM DEA_5_fiscal t1
+      order BY t1.reporterid,
+			   calculated year,
+			   t1.dea_reg_num, 
+			   t1.dw_num desc
+/*			   T1.MONTH_RECORD_VIN*/
+;
+QUIT;
+
+data DEA_FY_1;
+set DEA_FY_0;
+by reporterid year dea_reg_num descending dw_num;
+if first.dea_reg_num;
+run;
+
+
+PROC SQL;
    CREATE TABLE DEA_DW30_SW_Y_fiscal AS 
    SELECT DISTINCT 
    		  T1.STATE,
 		  t1.reporterid,
-		  year(fiscal_date) AS YEAR,
+		  t1.YEAR,
 		  CASE WHEN t1.DW='DW-30' THEN '3.3.30' 
 		  	   WHEN t1.DW='DW-100' THEN '3.3.100'
 			   WHEN t1.DW='DW-275' THEN '3.3.275' 
@@ -57,11 +85,11 @@ PROC SQL;
 			count (distinct dea_reg_num) as sum_ct
 /*			count (distinct address_1) as count_address_1,*/
 /*			count (distinct dea_reg_num) as count_dea_reg_num*/
-      FROM DEA_5_fiscal t1
+      FROM DEA_FY_1 t1
       GROUP BY t1.DW,
 			   T1.STATE,
 			   t1.reporterid,
-               calculated YEAR 
+               T1.YEAR 
 /*			   T1.MONTH_RECORD_VIN*/
 ;
 QUIT;
@@ -163,6 +191,7 @@ if NUMERATOR=. then numerator=0;
 IF YEAR=2023 THEN DELETE;
 
 /*1.)	for the Fiscal year we need to put the year in a 2 year format: */
+if Year eq 2023 then year=20222023;
 if Year eq 2022 then year=20212022;
 if Year eq 2021 then year=20202021;
 if Year eq 2020 then year=20192020;

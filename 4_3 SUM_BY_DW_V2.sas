@@ -2,31 +2,34 @@
 
 /*order by state county year dea_reg_num then select the last record*/
 PROC SQL;
-   CREATE TABLE DEA_DW_Y_0 AS 
-   SELECT DISTINCT	 
-			T1.DW,
-			T1.STATE,
-			t1.reporterid,
-            t1.YEAR_RECORD_VIN,
-			T1.NAME,
-			t1.dea_reg_num,
-			input(SUBSTR(DW,4,3),3.) as level
-			FROM DEA_5 t1
-      ORDER BY T1.DW,
-			   T1.STATE,
-			   t1.reporterid,
-               t1.YEAR_RECORD_VIN,
-			   T1.dea_reg_num,
-     		   level
+   CREATE TABLE DEA_Y_0 AS 
+   SELECT DISTINCT 
+   		  T1.STATE,
+		  t1.reporterid,
+		  YEAR_RECORD_VIN,
+/*		  MONTH_RECORD_VIN,*/
+		  . AS MONTH,
+          /* SUM_of_COUNT */
+/*            (SUM(t1.COUNT)) FORMAT=BEST32. AS SUM_CT,*/
+		    t1.dw,
+		    t1.dw_num,
+			t1.dea_reg_num
+/*			count (distinct address_1) as count_address_1,*/
+/*			count (distinct dea_reg_num) as count_dea_reg_num*/
+      FROM DEA_5 t1
+      order BY t1.reporterid,
+			   t1.YEAR_RECORD_VIN,
+			   t1.dea_reg_num, 
+			   t1.dw_num desc
+/*			   T1.MONTH_RECORD_VIN*/
 ;
 QUIT;
 
-DATA DEA_DW_Y_1;
-SET DEA_DW_Y_0;
-BY DW STATE reporterid YEAR_RECORD_VIN dea_reg_num ;
-IF LAST.dea_reg_num;
-RUN;
-
+data DEA_Y_1;
+set DEA_Y_0;
+by reporterid YEAR_RECORD_VIN dea_reg_num descending dw_num;
+if first.dea_reg_num;
+run;
 
 
 PROC SQL;
@@ -34,13 +37,14 @@ PROC SQL;
    SELECT DISTINCT 
    		  T1.DW,
    		  T1.STATE,
-		  t1.reporterid,
+		  t1.ReporterId,
 		  YEAR_RECORD_VIN AS YEAR,
-          count (distinct dea_reg_num) as sum_ct
-      FROM DEA_DW_Y_1 t1
+          /* SUM_of_COUNT */
+			count (distinct dea_reg_num) as sum_ct
+      FROM DEA_Y_1 t1
       GROUP BY T1.DW,
 			   T1.STATE,
-			   t1.reporterid,
+			   t1.ReporterId,
                t1.YEAR_RECORD_VIN
 ;
 QUIT;
@@ -48,50 +52,52 @@ QUIT;
 
 /***********************************************QUARTER*******************************************/
 PROC SQL;
-   CREATE TABLE DEA_DW_QTR_0 AS 
+   CREATE TABLE DEA_qtr_0 AS 
    SELECT DISTINCT 
-			T1.DW,
-			T1.STATE,
-			t1.reporterid,
-            t1.YEAR_RECORD_VIN,
-			T1.NAME,
-			t1.dea_reg_num,
-            INPUT(substr(CAT(T1.QUARTER_RECORD_VIN),2,1),1.) AS QUARTER,
-		    input(SUBSTR(DW,4,3),3.) as level
-			FROM DEA_5 t1
-      ORDER BY T1.DW,
-			   T1.STATE,
-			   t1.reporterid,
-               t1.YEAR_RECORD_VIN,
-			   QUARTER,
-			   T1.dea_reg_num,
-     		   level
+   		  T1.STATE,
+		  t1.reporterid,
+		  YEAR_RECORD_VIN,
+		  INPUT(substr(CAT(T1.QUARTER_RECORD_VIN),2,1),1.) AS QUARTER,
+		  . AS MONTH,
+          /* SUM_of_COUNT */
+/*            (SUM(t1.COUNT)) FORMAT=BEST32. AS SUM_CT,*/
+		    t1.dw,
+		    t1.dw_num,
+			t1.dea_reg_num
+/*			count (distinct address_1) as count_address_1,*/
+/*			count (distinct dea_reg_num) as count_dea_reg_num*/
+      FROM DEA_5 t1
+      order BY t1.reporterid,
+			   t1.YEAR_RECORD_VIN,
+			   calculated quarter,
+			   t1.dea_reg_num, 
+			   t1.dw_num desc
+/*			   T1.MONTH_RECORD_VIN*/
 ;
 QUIT;
 
-DATA DEA_DW_QTR_1;
-SET DEA_DW_QTR_0;
-BY DW STATE reporterid YEAR_RECORD_VIN QUARTER dea_reg_num ;
-IF LAST.dea_reg_num;
-RUN;
-
-
+data DEA_qtr_1;
+set DEA_qtr_0;
+by reporterid YEAR_RECORD_VIN quarter dea_reg_num descending dw_num;
+if first.dea_reg_num;
+run;
 
 PROC SQL;
    CREATE TABLE DEA_DW_QTR AS 
-   SELECT DISTINCT 
-   		  T1.DW,
-		  T1.STATE,
-		  t1.reporterid,
-		  YEAR_RECORD_VIN AS YEAR,
-		  QUARTER,
-          count (distinct dea_reg_num) as sum_ct
-      FROM DEA_DW_QTR_1 t1
+   SELECT DISTINCT
+	      T1.DW,
+   		  T1.STATE,
+	      t1.ReporterId,
+		  T1.YEAR_RECORD_VIN AS YEAR,
+		  T1.QUARTER,
+          /* SUM_of_COUNT */
+			count (distinct dea_reg_num) as sum_ct
+      FROM DEA_qtr_1 t1
       GROUP BY T1.DW,
 			   T1.STATE,
 			   t1.reporterid,
                t1.YEAR_RECORD_VIN,
-			   QUARTER
+			   T1.quarter
 ;
 QUIT;
 
