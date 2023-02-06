@@ -144,7 +144,7 @@ PROC FORMAT;
 		"cs_active_20221101" = '2022-10'
 		"cs_active_20221201" = '2022-11'
 		"cs_active_20230103" = '2022-12'
-
+		"cs_active_20230203" = '2023-01'
 ;
 	VALUE $dea_reg_numl
 		"0" = 'Chemical Handlers of List 1 (Manufacturer / Distributor / Importer / Exporter)'
